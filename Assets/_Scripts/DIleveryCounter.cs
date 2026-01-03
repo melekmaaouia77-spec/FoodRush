@@ -19,7 +19,7 @@ public class DIIeveryCounter : BaseKitchenObject
             customerManager = customerManagerGO.GetComponent<CustomerManager>();
     }
 
-    public override void Interact(Player player)
+    public override void Interact(players player)
     {
         if (IsClient)
         {
@@ -32,17 +32,15 @@ public class DIIeveryCounter : BaseKitchenObject
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(playerNetworkId, out NetworkObject playerNetworkObject))
         {
-            Player player = playerNetworkObject.GetComponent<Player>();
+            players player = playerNetworkObject.GetComponent<players>();
             if (player == null) return;
 
             PerformInteraction(player);
         }
     }
 
-    private void PerformInteraction(Player player)
+    private void PerformInteraction(players player)
     {
-       
-
         if (!HasKitchenObject())
         {
             if (player.HasKitchenObject())
@@ -60,7 +58,7 @@ public class DIIeveryCounter : BaseKitchenObject
                 int customerOrderIndex = currentCustomer.GetMyOrderIndex();
                 ObjectsSO requiredObjectSO = orderManager.Food[customerOrderIndex];
 
-                Debug.Log($"Player has: {playerObjectSO.objectName}, Customer wants: {requiredObjectSO.objectName}");
+                Debug.Log($"players has: {playerObjectSO.objectName}, Customer wants: {requiredObjectSO.objectName}");
 
                 if (playerObjectSO == requiredObjectSO)
                 {
@@ -70,6 +68,10 @@ public class DIIeveryCounter : BaseKitchenObject
                     GetKitchenObject().DestroySelf();
 
                     leave.Value = true;
+
+                    // Award money to the player who made the delivery
+                    AwardMoneyToPlayerClientRpc(player.NetworkObjectId);
+
                     StartCoroutine(ResetLeaveFlag());
                 }
                 else
@@ -79,12 +81,27 @@ public class DIIeveryCounter : BaseKitchenObject
             }
             else
             {
-                Debug.Log("Player has no kitchen object to deliver!");
+                Debug.Log("players has no kitchen object to deliver!");
             }
         }
         else
         {
             Debug.Log("Counter already has an object on it!");
+        }
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void AwardMoneyToPlayerClientRpc(ulong playerNetworkObjectId)
+    {
+        // Find the player object and award money only on their owning client
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(playerNetworkObjectId, out NetworkObject playerNetworkObject))
+        {
+            // Only the owner of this player should add money to their score
+            if (playerNetworkObject.IsOwner)
+            {
+                MoneyManager.Instance.AddMoney(10);
+                Debug.Log($"Player {playerNetworkObjectId} earned $10!");
+            }
         }
     }
 

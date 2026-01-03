@@ -26,7 +26,7 @@ public class PlatesCounter : BaseKitchenObject
 
         }
     }
-    public override void Interact(Player player)
+    public override void Interact(players player)
     {
         if (!player.HasKitchenObject())
         {

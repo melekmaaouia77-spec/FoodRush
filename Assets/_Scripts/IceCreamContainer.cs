@@ -21,7 +21,7 @@ public class IceCreamContainer : BaseKitchenObject
         IceCreamSelectionUI.Instance.OnIceCreamSelected += OnIceCreamChosen;
     }
 
-    public override void Interact(Player player)
+    public override void Interact(players player)
     {
         if (!HasKitchenObject() && !isSpawning)
         {
@@ -55,7 +55,7 @@ public class IceCreamContainer : BaseKitchenObject
 
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(playerNetworkId, out NetworkObject playerNetworkObject))
         {
-            Player player = playerNetworkObject.GetComponent<Player>();
+            players player = playerNetworkObject.GetComponent<players>();
             player?.FreezePlayer();
         }
 
@@ -74,7 +74,7 @@ public class IceCreamContainer : BaseKitchenObject
 
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(playerNetworkId, out NetworkObject playerNetworkObj))
         {
-            Player player = playerNetworkObj.GetComponent<Player>();
+            players player = playerNetworkObj.GetComponent<players>();
             player?.UnfreezePlayer();
         }
 
@@ -106,7 +106,7 @@ public class IceCreamContainer : BaseKitchenObject
 
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(playerNetworkId, out NetworkObject playerNetworkObject))
         {
-            Player player = playerNetworkObject.GetComponent<Player>();
+            players player = playerNetworkObject.GetComponent<players>();
             if (player != null && kitchenObject != null)
             {
                 kitchenObject.SetKitchenObjectParent(player);

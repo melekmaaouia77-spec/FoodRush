@@ -9,9 +9,9 @@ public class SelectedCounter : MonoBehaviour
     {
 
 
-        Player.Instance.OnSelectedCounterChanged += Player_OnSelectedCounterChanged;
+        players.Instance.OnSelectedCounterChanged += Player_OnSelectedCounterChanged;
     }
-    private void Player_OnSelectedCounterChanged(object sender, Player.OnSelectedCounterChangedEventArgs e)
+    private void Player_OnSelectedCounterChanged(object sender, players.OnSelectedCounterChangedEventArgs e)
     {
         if (e.selectedCounter == clearCounter)
         {

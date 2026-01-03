@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
    private Animator animator;
-    [SerializeField] private Player player;
+   [SerializeField] private players players;
 
     private void Awake()
     {
@@ -11,7 +11,7 @@ public class PlayerAnimator : MonoBehaviour
     }
     private void Update()
     {
-                 animator.SetBool("Walking",player.IsWalking());
+                 animator.SetBool("Walking", players.IsWalking());
 
     }
 

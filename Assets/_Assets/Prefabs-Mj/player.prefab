@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5514494103306592940}
   - component: {fileID: 3003028765818980920}
-  - component: {fileID: 8591753265759286135}
-  - component: {fileID: 885943605488321572}
   - component: {fileID: 2828622211930099594}
-  - component: {fileID: 9210687699600790255}
-  - component: {fileID: 2863340647936316835}
+  - component: {fileID: 851631246745750728}
+  - component: {fileID: 8907781922118660702}
+  - component: {fileID: 8323003504607083555}
+  - component: {fileID: 3842495754022673199}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -31,9 +31,9 @@ Transform:
   m_GameObject: {fileID: 1559266420502273319}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.9927193, z: -0, w: 0.12045098}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.07, z: 0}
   m_LocalScale: {x: 2.130111, y: 2.130111, z: 2.130111}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4059381946313350281}
   - {fileID: 5950874902191810790}
@@ -57,59 +57,13 @@ MonoBehaviour:
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
+  ActiveSceneSynchronization: 1
   SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
---- !u!114 &8591753265759286135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559266420502273319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f5784e968d1004fb5fdcf303838de5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  ShowTopMostFoldoutHeaderGroup: 1
-  speed: 30
-  rotationSpeed: 10
-  gravity: -9.81
-  interactDistance: 2
-  interactableLaye:
-    serializedVersion: 2
-    m_Bits: 0
-  KitchenObjectHoldPoint: {fileID: 5950874902191810790}
---- !u!143 &885943605488321572
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559266420502273319}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 8.45
-  m_Radius: 2.1
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 3.91, z: 0}
+  AllowOwnerToParent: 1
 --- !u!114 &2828622211930099594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +77,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClientNetworkTransform
   ShowTopMostFoldoutHeaderGroup: 1
-  NetworkTransformExpanded: 0
+  NetworkTransformExpanded: 1
   AutoOwnerAuthorityTickOffset: 1
   PositionInterpolationType: 0
   RotationInterpolationType: 0
@@ -156,7 +110,32 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &9210687699600790255
+--- !u!143 &851631246745750728
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559266420502273319}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 5.88
+  m_Radius: 2.03
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 2.57, z: 0}
+--- !u!114 &8907781922118660702
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,11 +161,32 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Player
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &2863340647936316835
+--- !u!114 &8323003504607083555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559266420502273319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 525bb069734711f4cb67d3dcbe1d2060, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::players
+  ShowTopMostFoldoutHeaderGroup: 1
+  speed: 20
+  rotationSpeed: 10
+  gravity: -9.81
+  interactDistance: 2
+  interactableLaye:
+    serializedVersion: 2
+    m_Bits: 0
+  KitchenObjectHoldPoint: {fileID: 5950874902191810790}
+--- !u!114 &3842495754022673199
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClientPlayerMove
   ShowTopMostFoldoutHeaderGroup: 1
-  m_PlayerInput: {fileID: 9210687699600790255}
+  m_PlayerInput: {fileID: 8907781922118660702}
 --- !u!1 &9111152455132667843
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,7 +257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3294758251327466532, guid: 1c5dda3c7cd3cf742afcade5419faeab, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.62
+      value: -0.37
       objectReference: {fileID: 0}
     - target: {fileID: 3294758251327466532, guid: 1c5dda3c7cd3cf742afcade5419faeab, type: 3}
       propertyPath: m_LocalPosition.z
@@ -301,10 +301,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3294758251327466535, guid: 1c5dda3c7cd3cf742afcade5419faeab, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1229987578150287196}
+      addedObject: {fileID: 4734801010859650509}
     - targetCorrespondingSourceObject: {fileID: 3294758251327466535, guid: 1c5dda3c7cd3cf742afcade5419faeab, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4734801010859650509}
+      addedObject: {fileID: 5267566672110745333}
   m_SourcePrefab: {fileID: 100100000, guid: 1c5dda3c7cd3cf742afcade5419faeab, type: 3}
 --- !u!4 &4059381946313350281 stripped
 Transform:
@@ -316,19 +316,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3294758251327466535, guid: 1c5dda3c7cd3cf742afcade5419faeab, type: 3}
   m_PrefabInstance: {fileID: 1579786498139304109}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1229987578150287196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4059381946313350282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2b5471d49a48b240a37f729150244e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
-  player: {fileID: 8591753265759286135}
 --- !u!114 &4734801010859650509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,6 +331,19 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 8133040509311126966}
+--- !u!114 &5267566672110745333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059381946313350282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2b5471d49a48b240a37f729150244e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
+  players: {fileID: 0}
 --- !u!95 &8133040509311126966 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 7292130661791907099, guid: 1c5dda3c7cd3cf742afcade5419faeab, type: 3}

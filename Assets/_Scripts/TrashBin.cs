@@ -3,7 +3,7 @@ using Unity.Netcode;
 
 public class TrashBin : BaseKitchenObject
 {
-    public override void Interact(Player player)
+    public override void Interact(players player)
     {
         if (IsClient)
         {
@@ -16,28 +16,28 @@ public class TrashBin : BaseKitchenObject
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(playerNetworkId, out NetworkObject playerNetworkObject))
         {
-            Player player = playerNetworkObject.GetComponent<Player>();
+            players player = playerNetworkObject.GetComponent<players>();
             if (player == null) return;
 
             PerformInteraction(player);
         }
     }
 
-    private void PerformInteraction(Player player)
+    private void PerformInteraction(players player)
     {
         Debug.Log($"TrashBin.Interact() called on {gameObject.name}!");
 
         if (player.HasKitchenObject())
         {
-            Debug.Log("Destroying player's kitchen object directly from player");
+            Debug.Log("Destroying players's kitchen object directly from players");
 
-            // Destroy the object directly from the player WITHOUT transferring to trash bin
+            // Destroy the object directly from the players WITHOUT transferring to trash bin
             player.GetKitchenObject().DestroySelf();
             Debug.Log("Kitchen object destroyed successfully");
         }
         else
         {
-            Debug.Log("Player has no kitchen object to destroy!");
+            Debug.Log("players has no kitchen object to destroy!");
         }
     }
 }

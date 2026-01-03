@@ -17,7 +17,7 @@ public class ClearCounter : BaseKitchenObject
         }
     }
 
-    public override void Interact(Player player)
+    public override void Interact(players player)
     {
         // Client sends request to server
         if (IsClient)
@@ -31,14 +31,14 @@ public class ClearCounter : BaseKitchenObject
     {
         if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(playerNetworkId, out NetworkObject playerNetworkObject))
         {
-            Player player = playerNetworkObject.GetComponent<Player>();
+            players player = playerNetworkObject.GetComponent<players>();
             if (player == null) return;
 
             PerformInteraction(player);
         }
     }
 
-    private void PerformInteraction(Player player)
+    private void PerformInteraction(players player)
     {
         if (!HasKitchenObject())
         {
@@ -51,7 +51,7 @@ public class ClearCounter : BaseKitchenObject
         {
             if (player.HasKitchenObject())
             {
-                // Player already has something
+                // players already has something
             }
             else
             {

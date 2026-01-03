@@ -4,6 +4,8 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Vivox;
 using System.Threading.Tasks;
+using System.Collections;
+
 
 public class MenuManager : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class MenuManager : MonoBehaviour
     private bool eventInitialized = false;
     private static MenuManager singleton = null;
     private string lastUserName = "";
-    private bool isInChannel = false;
+    private bool isInChannel = false; // track channel join
     private bool isTalking = false;
 
     [SerializeField] private Canvas canvs;
@@ -54,7 +56,8 @@ public class MenuManager : MonoBehaviour
 
     public async void StartClientService()
     {
-        Debug.Log("[UI] Starting client services...");
+        PanelManager.CloseAll();
+        PanelManager.Open("loading");
 
         try
         {
@@ -72,12 +75,11 @@ public class MenuManager : MonoBehaviour
             if (AuthenticationService.Instance.SessionTokenExists)
                 await SignInAnonymouslyAsync();
             else
-                Debug.Log("[UI] Please sign in");
+                PanelManager.Open("auth");
         }
         catch (Exception ex)
         {
-            Debug.LogError($"[ERROR] Failed to connect to network: {ex.Message}");
-            ShowError("OpenAuthMenu", "Failed to connect to the network", "retry");
+            ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to connect to the network", "retry");
         }
     }
 
@@ -87,14 +89,15 @@ public class MenuManager : MonoBehaviour
         AuthenticationService.Instance.SignedIn += SignInConfirmAsync;
         AuthenticationService.Instance.SignedOut += () =>
         {
-            Debug.Log("[UI] Signed out");
+            PanelManager.CloseAll();
+            PanelManager.Open("auth");
         };
         AuthenticationService.Instance.Expired += async () => await SignInAnonymouslyAsync();
     }
 
     public async Task SignInAnonymouslyAsync()
     {
-        Debug.Log("[AUTH] Signing in anonymously...");
+        PanelManager.Open("loading");
         try
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
@@ -102,54 +105,48 @@ public class MenuManager : MonoBehaviour
         }
         catch (AuthenticationException ex)
         {
-            Debug.LogError($"[ERROR] Failed to sign in: {ex.Message}");
-            ShowError("OpenAuthMenu", "Failed to sign in", "ok");
+            ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to sign in", "ok");
         }
         catch (RequestFailedException ex)
         {
-            Debug.LogError($"[ERROR] Network connection failed: {ex.Message}");
-            ShowError("OpenAuthMenu", "Failed to connect to the network", "ok");
+            ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to connect to the network", "ok");
         }
     }
 
     public async void SignInWithUserNameAndPasswordAsync(string userName, string password)
     {
         lastUserName = userName.Trim();
-        Debug.Log($"[AUTH] Signing in as: {userName}");
+        PanelManager.Open("loading");
         try
         {
             await AuthenticationService.Instance.SignInWithUsernamePasswordAsync(userName, password);
             await OnSignedIn();
         }
-        catch (AuthenticationException ex)
+        catch (AuthenticationException)
         {
-            Debug.LogError($"[ERROR] Wrong username/password: {ex.Message}");
-            ShowError("OpenAuthMenu", "Username or password is wrong", "ok");
+            ShowError(ErrorMenu.Action.OpenAuthMenu, "Username or password is wrong", "ok");
         }
-        catch (RequestFailedException ex)
+        catch (RequestFailedException)
         {
-            Debug.LogError($"[ERROR] Network connection failed: {ex.Message}");
-            ShowError("OpenAuthMenu", "Failed to connect to the network", "ok");
+            ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to connect to the network", "ok");
         }
     }
 
     public async void SignUpWithUserNameAndPasswordAsync(string userName, string password)
     {
-        Debug.Log($"[AUTH] Signing up as: {userName}");
+        PanelManager.Open("loading");
         try
         {
             await AuthenticationService.Instance.SignUpWithUsernamePasswordAsync(userName, password);
             await OnSignedIn();
         }
-        catch (AuthenticationException ex)
+        catch (AuthenticationException)
         {
-            Debug.LogError($"[ERROR] Failed to sign up: {ex.Message}");
-            ShowError("OpenAuthMenu", "Failed to sign you up", "ok");
+            ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to sign you up", "ok");
         }
-        catch (RequestFailedException ex)
+        catch (RequestFailedException)
         {
-            Debug.LogError($"[ERROR] Network connection failed: {ex.Message}");
-            ShowError("OpenAuthMenu", "Failed to connect to the network", "ok");
+            ShowError(ErrorMenu.Action.OpenAuthMenu, "Failed to connect to the network", "ok");
         }
     }
 
@@ -157,7 +154,10 @@ public class MenuManager : MonoBehaviour
     {
         Debug.Log("✅ Unity Authentication complete, now logging into Vivox...");
 
-        // Login to Vivox
+       
+     
+
+        // Login to Vivox (use Unity Auth token automatically)
         await VivoxService.Instance.LoginAsync();
 
         // Join a default channel
@@ -167,34 +167,29 @@ public class MenuManager : MonoBehaviour
         isInChannel = true;
         Debug.Log("🎤 Joined Vivox channel: " + channelName);
 
+       // PanelManager.CloseAll();
+      //  PanelManager.Open("main");
         await VivoxService.Instance.SetChannelTransmissionModeAsync(TransmissionMode.None, "Lobby");
-        Debug.Log("🔇 Voice chat ready - Press P to talk");
     }
 
     public void SignOut()
     {
         AuthenticationService.Instance.SignOut();
+        PanelManager.CloseAll();
+        PanelManager.Open("auth");
+        
         isInChannel = false;
-        isTalking = false;
-        Debug.Log("[AUTH] Signed out");
     }
-
     public async void LogoutOfVivoxAsync()
     {
         await VivoxService.Instance.LogoutAsync();
-        isInChannel = false;
-        isTalking = false;
     }
 
-    private void ShowError(string action = "None", string error = "", string button = "")
+    private void ShowError(ErrorMenu.Action action = ErrorMenu.Action.None, string error = "", string button = "")
     {
-        Debug.Log($"[ERROR] {error}");
-
-        if (button == "retry")
-        {
-            Debug.Log("[ACTION] Retrying connection...");
-            StartClientService();
-        }
+        PanelManager.Close("loading");
+        ErrorMenu panel = (ErrorMenu)PanelManager.GetSingleton("error");
+        panel.Open(action, error, button);
     }
 
     private async void SignInConfirmAsync()
@@ -203,38 +198,33 @@ public class MenuManager : MonoBehaviour
         {
             if (string.IsNullOrEmpty(AuthenticationService.Instance.PlayerName))
             {
-                await AuthenticationService.Instance.UpdatePlayerNameAsync("Player");
+                await AuthenticationService.Instance.UpdatePlayerNameAsync("players");
             }
-            Debug.Log("[AUTH] Sign-in confirmed");
+            PanelManager.CloseAll();
+            PanelManager.Open("main");
         }
-        catch (Exception ex)
-        {
-            Debug.LogError($"[ERROR] in SignInConfirm: {ex.Message}");
-        }
+        catch (Exception) { }
     }
 
     private async void Update()
     {
         if (!isInChannel) return;
 
-        if (Input.GetKeyDown(KeyCode.P) && !isTalking)
+        string channelName = "Lobby";
+
+        if (Input.GetKeyDown(KeyCode.P) )
         {
-            await VivoxService.Instance.SetChannelTransmissionModeAsync(TransmissionMode.All, "Lobby");
-            isTalking = true;
-            Debug.Log("🎤 TALKING...");
+           await VivoxService.Instance.SetChannelTransmissionModeAsync(TransmissionMode.All,"Lobby");
+            Debug.Log("talking");
         }
 
-        if (Input.GetKeyUp(KeyCode.P) && isTalking)
+        if (Input.GetKeyUp(KeyCode.P))
         {
-            await VivoxService.Instance.SetChannelTransmissionModeAsync(TransmissionMode.None, "Lobby");
-            isTalking = false;
-            Debug.Log("🔇 MUTED");
+            await VivoxService.Instance.SetChannelTransmissionModeAsync(TransmissionMode.None,"Lobby");
+            Debug.Log("not talking");
         }
     }
-    public void OnClickSignInAnonymously()
-    {
-        // Fire and forget
-        _ = SignInAnonymouslyAsync();
-    }
+
+   
 
 }
