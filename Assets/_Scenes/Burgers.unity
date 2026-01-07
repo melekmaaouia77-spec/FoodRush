@@ -5215,7 +5215,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 202, y: -95}
+  m_AnchoredPosition: {x: 129.1, y: 48.4}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &309000088
@@ -24158,8 +24158,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1320844357}
-  - component: {fileID: 1320844356}
   - component: {fileID: 1320844358}
+  - component: {fileID: 1320844356}
   m_Layer: 0
   m_Name: MoneyManager
   m_TagString: Untagged
@@ -24179,6 +24179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ded7be2bd72cd48a9268f2644559bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoneyManager
+  ShowTopMostFoldoutHeaderGroup: 1
   moneyText: {fileID: 309000088}
 --- !u!4 &1320844357
 Transform:
